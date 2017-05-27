@@ -1,4 +1,16 @@
 import numpy as np
+import time
+
+#плохая идея работатьчерез глобальнуюпеременную, нопокадругих нет
+res = 0 
+
+#значения res: 
+#0 все ОК
+#1 повтор в строке
+#2 повтор в столбце
+#3 повтор в регионе
+#5 решено
+
 
 #функция оптимизации судоку
 def Optimaze (Sud, n, m):
@@ -222,6 +234,7 @@ Sudoku[8][8][0] = 3
 print('\n\n')
 SudokuPrint(Sudoku)
 
+TimeWork = time.time()
 #первое приблежение
 for i in range(0, 9):
     for j in range(0, 9):
@@ -240,7 +253,8 @@ else:
 print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 SudokuPrint(Sudoku)
 
-
+TimeWork = -(TimeWork - time.time())
+print(TimeWork)
 #5306
 #008030005
 #600001000
