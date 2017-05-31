@@ -2,8 +2,7 @@ import numpy as np
 import time
 
 #плохая идея работатьчерез глобальнуюпеременную, нопокадругих нет
-res = 0 
-
+res = 0
 #значения res: 
 #0 все ОК
 #1 повтор в строке
@@ -32,6 +31,7 @@ def Optimaze (Sud, n, m):
 
 #проверка на противоречия
 def Prover(Sud):
+    global res
     res=0
     #проверяемая линия
     line = list()
@@ -119,8 +119,8 @@ def SudokuPrint(Sud):
 
 
 def Reshen(Sud):
-    #rechen - рещультат проверки
-    
+    #rechen - результат проверки
+    global res
     #проверяем варианты вынужденного решения
     progress = 0
     for i in range(0, 9):
@@ -139,30 +139,31 @@ def Reshen(Sud):
                     Sud = Optimaze(Sud, i, j)
                     progress += 1
     SudokuPrint(Sud)
+    print(res)
     print('=================================================')
     
     #проверяем решено ли
-    rechen = 5
+    res = 5
     for i in range (0, 9):
         for j in range(0, 9):
             if (Sud[i][j][0] == 0):
-                rechen = 0
+                res = 0
                 break
-        if (rechen == 0):
+        if (res == 0):
             break
                 
-    if(rechen == 5):
+    if(res == 5):
         return Sud
-    
-    #если вынужденные решения были то проверяем еще раз
-    if (progress > 0 ):
-        Sud = Reshen(Sud)
     else:
-        rechen = Prover(Sud)
-        if (rechen==0):
-            Sud = Predpoloj(Sud)
+    #если вынужденные решения были то проверяем еще раз
+        if (progress > 0 ):
+            Sud = Reshen(Sud)
         else:
-            return Sud
+            p = Prover(Sud)
+            if (p ==0):
+                Sud = Predpoloj(Sud)
+            else:
+                return Sud
         
         
     return Sud
@@ -251,7 +252,9 @@ else:
     Sudoku = Reshen(Sudoku)
 
 print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-SudokuPrint(Sudoku)
+if(res == 5):
+    SudokuPrint(Sudoku)
+    print (res)
 
 TimeWork = -(TimeWork - time.time())
 print(TimeWork)
